@@ -11,7 +11,7 @@ app.get('/powerdeck/', function (req, res) {
   });
 });
 
-app.post('/powerdeck/create', function (req, res) {
+app.post('/powerdeck/', function (req, res) {
   res.json({
     id: 1
   });
@@ -23,7 +23,7 @@ app.post('/powerdeck/:id/edit', function (req, res) {
   });
 });
 
-app.post('/powerdeck/:id/delete', function (req, res) {
+app.delete('/powerdeck/:id', function (req, res) {
   res.json({
     id: req.params.id
   });
@@ -55,7 +55,7 @@ app.post('/powerdeck/:id/edit', function (req, res) {
   });
 });
 
-app.post('/powerdeck/:id/delete', function (req, res) {
+app.delete('/powerdeck/:id', function (req, res) {
   res.json({
     id: req.params.id
   });
@@ -74,5 +74,4 @@ app.post('/powercards/:id/incorrect_answer', function (req, res) {
   });
 });
 
-
-app.listen(8000)
+app.listen(8000);

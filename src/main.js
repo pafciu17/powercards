@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const multer  = require('multer');
 
+console.log(process.env)
+
 const bodyParser = require('body-parser');
 const initDB = require('./initDB');
 const upload = multer({ dest: 'uploads/' });
@@ -47,15 +49,22 @@ initDB()
     //create
     app.post('/powerdeck/', (req, res) => {
       const powerdeckData = pickPowerdeckData(req.body);
-      powerdecks.insertOne(powerdeckData, err => {
-        if (err) {
-          res.json({
-            err
-          });
-        } else {
-          res.json(removeUnderscoreId(powerdeckData));
-        }
-      });
+      if (powerdeckData.name) {
+        powerdecks.insertOne(powerdeckData, err => {
+          if (err) {
+            res.json({
+              err
+            });
+          } else {
+            res.json(R.merge(
+              removeUnderscoreId(powerdeckData),
+              {
+                cards: 0
+              }
+            ));
+          }
+        });
+      }
     });
 
     //edit
@@ -79,7 +88,6 @@ initDB()
 
     //delete
     app.delete('/powerdeck/:id', (req, res) => {
-      console.log('Delete powerdeck');
       const id = req.params.id;
       powerdecks.findOneAndDelete({
         _id: new ObjectId(id)
@@ -118,6 +126,7 @@ initDB()
 
     //create
     app.post('/powerdeck/:id/powercard', function (req, res) {
+      console.log
       const powerdeckId = req.params.id;
       const powercardData = R.merge(
         pickPowercardData(req.body),
@@ -130,13 +139,21 @@ initDB()
             err
           });
         } else {
+          powerdecks.findOneAndUpdate({
+            _id: new ObjectId(powerdeckId)
+          }, {
+            $inc: {
+              cards: 1
+            }
+          });
+
           res.json(removeUnderscoreId(powercardData));
         }
       });
     });
 
     //edit
-    app.post('/powercard/:id/', function (req, res) {
+    app.post('/powercard/:id', function (req, res) {
       const powercardData = pickPowercardData(req.body);
       const id = req.params.id;
       powercards.findOneAndUpdate({
@@ -151,13 +168,24 @@ initDB()
         } else {
           res.json(removeUnderscoreId(powercardData));
         }
-      })
+      });
     });
 
     //delete
     app.delete('/powercard/:id', function (req, res) {
-      res.json({
-        id: req.params.id
+      const id = req.params.id;
+      powercards.findOneAndDelete({
+        _id: new ObjectId(id)
+      }, err => {
+        if (err) {
+          res.json({
+            err
+          });
+        } else {
+          res.json({
+            success: true
+          });
+        }
       });
     });
 

@@ -161,18 +161,19 @@ initDB()
       });
     });
 
-//Answers
-//     app.post('/powerdeck/:id/correct_answer', function (req, res) {
-//       res.json({
-//         msg: 'You are smart'
-//       });
-//     });
-//
-//     app.post('/powercards/:id/incorrect_answer', function (req, res) {
-//       res.json({
-//         msg: 'Study more!'
-//       });
-//     });
-//   });
+    // //Answers
+    // app.post('/powerdeck/:id/correct_answer', function (req, res) {
+    //   res.json({
+    //     msg: 'You are smart'
+    //   });
+    // });
+    //
+    // app.post('/powercards/:id/incorrect_answer', function (req, res) {
+    //   res.json({
+    //     msg: 'Study more!'
+    //   });
+    // });
+
+  });
 
 app.listen(8000);

@@ -48,7 +48,9 @@ initDB()
 
     //create
     app.post('/powerdeck/', (req, res) => {
+      console.log('Creates powerdeck!!!');
       const powerdeckData = pickPowerdeckData(req.body);
+      console.log(powerdeckData);
       if (powerdeckData.name) {
         powerdecks.insertOne(powerdeckData, err => {
           if (err) {
@@ -63,6 +65,10 @@ initDB()
               }
             ));
           }
+        });
+      } else {
+        res.json({
+          err: 'Incorrect input format'
         });
       }
     });
